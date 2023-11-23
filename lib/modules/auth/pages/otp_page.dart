@@ -1,7 +1,16 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
-import 'package:veli__flutter/modules/auth/pages/successfully_page.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:veli_flutter/constants/common.constanst.dart';
+import 'package:veli_flutter/helpers/navigator_helper.dart';
+import 'package:veli_flutter/models/user_model.dart';
+import 'package:veli_flutter/modules/auth/pages/successfully_page.dart';
+import 'package:veli_flutter/routes/route_config.dart';
+import 'package:veli_flutter/services/local_storage_service.dart';
 import '../widgets/auth_action_button.dart';
 import '../widgets/auth_countdown.dart';
+import 'package:http/http.dart' as http;
 
 import '../widgets/otp_text_field.dart';
 
@@ -24,6 +33,68 @@ class _OTPPageState extends State<OTPPage> {
   final FocusNode otpDigit2FocusNode = FocusNode();
   final FocusNode otpDigit3FocusNode = FocusNode();
   final FocusNode otpDigit4FocusNode = FocusNode();
+
+  LocalStorageService localStorage = LocalStorageService();
+
+  UserModel? user;
+  bool isResend = false;
+
+  Future<UserModel?> getUser() async {
+    UserModel? userStorage = await localStorage.getUserInfo();
+    setState(() {
+      user = userStorage;
+    });
+    return user;
+  }
+
+  Future<void> getVerifyCode() async {
+    final String? userId = widget.params!["userId"];
+    try {
+      UserModel? user = await getUser();
+      final response = await http.post(
+          headers: {'authorization': 'Bearer ${user!.accessToken}'},
+          Uri.parse('$apiHost/api/auth/verify'));
+      Fluttertoast.showToast(msg: jsonDecode(response.body)["message"]);
+
+    } catch (e) {
+      Fluttertoast.showToast(msg: '$e');
+      print(e);
+    }
+  }
+
+  Future<void> sendVerifyCode() async {
+    final String? userId = widget.params!["userId"];
+    try {
+      UserModel? user = await getUser();
+      final body = {
+        "otp_code":
+            "${otpDigit1Controller.text}${otpDigit2Controller.text}${otpDigit3Controller.text}${otpDigit4Controller.text}".toString()
+      };
+
+      print(body);
+
+      final response = await http.post(
+          headers: {'authorization': 'Bearer ${user!.accessToken}'},
+          Uri.parse('$apiHost/api/auth/verify/$userId'),
+          body: body);
+
+      Fluttertoast.showToast(msg: jsonDecode(response.body)["message"]);
+      if (response.statusCode == 200) {
+        navigatorHelper.changeView(context, RouteNames.main);
+      }
+    } catch (e) {
+      print(e);
+      Fluttertoast.showToast(msg: '$e');
+    }
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    getUser();
+    getVerifyCode();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -54,7 +125,7 @@ class _OTPPageState extends State<OTPPage> {
               ),
               const SizedBox(height: 10),
               Text(
-                'Nhập mã OTP đã nhận ở SĐT ',
+                'Nhập mã OTP đã nhận ở SĐT ${user?.phone}',
                 style: const TextStyle(
                   fontSize: 16,
                 ),
@@ -98,7 +169,11 @@ class _OTPPageState extends State<OTPPage> {
                   children: [
                     CountdownTimer(
                       seconds: 60,
-                      onTimerFinish: () {},
+                      onTimerFinish: () {
+                        setState(() {
+                          isResend = true;
+                        });
+                      },
                     ),
                     const SizedBox(width: 5),
                     const Text(
@@ -111,6 +186,13 @@ class _OTPPageState extends State<OTPPage> {
               const SizedBox(height: 10),
               GestureDetector(
                 onTap: () {
+                  if (!isResend) {
+                    return;
+                  }
+                  setState(() {
+                    isResend = false;
+                  });
+                  getVerifyCode();
                   // Hành động khi nhấp vào "Gửi lại"
                 },
                 child: RichText(
@@ -123,7 +205,7 @@ class _OTPPageState extends State<OTPPage> {
                       TextSpan(
                         text: 'Gửi lại',
                         style: TextStyle(
-                          color: Colors.grey,
+                          color: isResend ? Colors.black : Colors.grey,
                           fontWeight: FontWeight.bold,
                         ),
                       ),
@@ -135,10 +217,11 @@ class _OTPPageState extends State<OTPPage> {
               AuthActionButton(
                 text: 'Xác thực',
                 onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => SuccessfullyPage()),
-                  );
+                  sendVerifyCode();
+                  // Navigator.push(
+                  //   context,
+                  //   MaterialPageRoute(builder: (context) => SuccessfullyPage()),
+                  // );
                 },
               ),
             ],
