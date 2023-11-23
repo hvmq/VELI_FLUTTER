@@ -1,31 +1,20 @@
 import 'dart:core';
 
 import 'package:flutter/material.dart';
-import 'package:veli__flutter/modules/auth/pages/forgot_password_page.dart';
-import 'package:veli__flutter/modules/auth/pages/login_page.dart';
-// import 'package:veli__flutter/modules/auth/pages/new_password_page.dart';
-import 'package:veli__flutter/modules/auth/pages/otp_page.dart';
-import 'package:veli__flutter/modules/auth/pages/sign_up_page.dart';
-import 'package:veli__flutter/modules/auth/pages/successfully_page.dart';
-// import 'package:veli__flutter/modules/auth/pages/update_password_otp_page.dart';
-// import 'package:veli__flutter/modules/chat/pages/chat_page.dart';
-// import 'package:veli__flutter/modules/chat/pages/conversation_page.dart';
-// import 'package:veli__flutter/modules/chatbot/pages/chatbot_page.dart';
-// import 'package:veli__flutter/modules/description/pages/description_page.dart';
-// import 'package:veli__flutter/modules/filter/pages/filter_page.dart';
-// import 'package:veli__flutter/modules/post/pages/add_post_page.dart';
-// import 'package:veli__flutter/modules/profile/pages/add_school_page.dart';
-// import 'package:veli__flutter/modules/profile/pages/other_profile_page.dart';
-// import 'package:veli__flutter/modules/profile/pages/profile_page.dart';
-// import 'package:veli__flutter/modules/save/manage_page.dart';
-// import 'package:veli__flutter/modules/save/no_saving.dart';
-// import 'package:veli__flutter/modules/save/save_page.dart';
-import 'package:veli__flutter/modules/setting/pages/log_out.dart';
-import 'package:veli__flutter/modules/setting/pages/setting_page.dart';
-import 'package:veli__flutter/modules/setting/pages/update_password.dart';
-import 'package:veli__flutter/pages/home_page.dart';
-import 'package:veli__flutter/pages/onboadring.dart';
-// import 'package:veli__flutter/widgets/navbar.dart';
+import 'package:veli_flutter/modules/auth/pages/forgot_password_page.dart';
+import 'package:veli_flutter/modules/auth/pages/login_page.dart';
+import 'package:veli_flutter/modules/auth/pages/new_password_page.dart';
+import 'package:veli_flutter/modules/auth/pages/otp_page.dart';
+import 'package:veli_flutter/modules/auth/pages/sign_up_page.dart';
+import 'package:veli_flutter/modules/auth/pages/successfully_page.dart';
+import 'package:veli_flutter/modules/auth/pages/update_password_otp_page.dart';
+import 'package:veli_flutter/modules/description/pages/description_page.dart';
+import 'package:veli_flutter/modules/filter/pages/filter_page.dart';
+import 'package:veli_flutter/modules/post/pages/add_post_page.dart';
+import 'package:veli_flutter/pages/home_page.dart';
+import 'package:veli_flutter/pages/onboadring.dart';
+import 'package:veli_flutter/widgets/navbar.dart';
+
 
 /// Hoàn thiện phần router
 /// Viết file navigator_helper ( Dùng để chuyển trang ).
@@ -74,32 +63,33 @@ class RouteCreator {
       view: ({settings, params}) => OnBoarding(),
     ),
 
-    // RouteNames.main: BaseRoute(
-    //   RouteNames.main,
-    //   'Main',
-    //   null,
-    //   view: ({params, settings}) => MainPage(),
-    // ),
-    // RouteNames.main: BaseRoute(
-    //   RouteNames.main,
-    //   'Main',
-    //   null,
-    //   view: ({params, settings}) => MainPage(),
-    // ),
-    // //authentication
-    // RouteNames.login: BaseRoute(
-    //   RouteNames.login,
-    //   'Login',
-    //   null,
-    //   view: ({settings, params}) => LoginPage(),
-    // ),
+    RouteNames.main: BaseRoute(
+      RouteNames.main,
+      'Main',
+      null,
+      view: ({params, settings}) => MainPage(),
+    ),
+    RouteNames.main: BaseRoute(
+      RouteNames.main,
+      'Main',
+      null,
+      view: ({params, settings}) => MainPage(),
+    ),
+    //authentication
+    RouteNames.login: BaseRoute(
+      RouteNames.login,
+      'Login',
+      null,
+      view: ({settings, params}) => LoginPage(),
+    ),
 
-    // RouteNames.signup: BaseRoute(
-    //   RouteNames.signup,
-    //   'SignUp',
-    //   null,
-    //   view: ({settings, params}) => SignupPage(),
-    // ),
+    RouteNames.signup: BaseRoute(
+      RouteNames.signup,
+      'SignUp',
+      null,
+      view: ({settings, params}) => SignupPage(),
+    ),
+
 
     RouteNames.forgotpassword: BaseRoute(
       RouteNames.forgotpassword,
@@ -117,23 +107,25 @@ class RouteCreator {
       ),
     ),
 
-    // RouteNames.updatePasswordOtp: BaseRoute(
-    //   RouteNames.updatePasswordOtp,
-    //   'UpdatePasswrordOtp',
-    //   null,
-    //   view: ({params, settings}) => UpdatePasswordOTPPage(
-    //     params: params,
-    //   ),
-    // ),
 
-    // RouteNames.newPassword: BaseRoute(
-    //   RouteNames.newPassword,
-    //   'NewPassword',
-    //   null,
-    //   view: ({params, settings}) => NewPasswordPage(
-    //     params: params,
-    //   ),
-    // ),
+    RouteNames.updatePasswordOtp: BaseRoute(
+      RouteNames.updatePasswordOtp,
+      'UpdatePasswrordOtp',
+      null,
+      view: ({params, settings}) => UpdatePasswordOTPPage(
+        params: params,
+      ),
+    ),
+
+    RouteNames.newPassword: BaseRoute(
+      RouteNames.newPassword,
+      'NewPassword',
+      null,
+      view: ({params, settings}) => NewPasswordPage(
+        params: params,
+      ),
+    ),
+
     RouteNames.successfullypage: BaseRoute(
       RouteNames.successfullypage,
       'SuccessfullyPage',
@@ -146,110 +138,27 @@ class RouteCreator {
       null,
       view: ({params, settings}) => HomePage(),
     ),
-    // RouteNames.addpost: BaseRoute(
-    //   RouteNames.addpost,
-    //   'AddPost',
-    //   null,
-    //   view: ({params, settings}) => AddPostPage(),
-    // ),
-
-    // RouteNames.description: BaseRoute(
-    //   RouteNames.description,
-    //   'Description',
-    //   null,
-    //   view: ({params, settings}) => Descriptionpage(params: params),
-    // ),
-
-    // RouteNames.filter: BaseRoute(
-    //   RouteNames.filter,
-    //   'Filter',
-    //   null,
-    //   view: ({params, settings}) => FilterPage(),
-    // ),
-
-    // RouteNames.message: BaseRoute(
-    //   RouteNames.message,
-    //   'Message',
-    //   null,
-    //   view: ({params, settings}) => ChatPage(params: params),
-    // ),
-
-    // RouteNames.chat: BaseRoute(
-    //   RouteNames.chat,
-    //   'Chat',
-    //   null,
-    //   view: ({params, settings}) => ConversationPage(),
-    // ),
-
-    // RouteNames.myprofile: BaseRoute(
-    //   RouteNames.myprofile,
-    //   'MyProfile',
-    //   null,
-    //   view: ({params, settings}) => ProfilePage(),
-    // ),
-
-    // RouteNames.otherProfile: BaseRoute(
-    //   RouteNames.otherProfile,
-    //   'OtherProfile',
-    //   null,
-    //   view: ({params, settings}) => OtherProfilePage(params: params),
-    // ),
-
-    RouteNames.settings: BaseRoute(
-      RouteNames.settings,
-      'Settings',
+    RouteNames.addpost: BaseRoute(
+      RouteNames.addpost,
+      'AddPost',
       null,
-      view: ({params, settings}) => SettingsPage(),
+      view: ({params, settings}) => AddPostPage(),
     ),
 
-    // RouteNames.updatepassword: BaseRoute(
-    //   RouteNames.updatepassword,
-    //   'UpdatePassword',
-    //   null,
-    //   view: ({params, settings}) => UpdatePassword(),
-    // ),
-
-    RouteNames.logout: BaseRoute(
-      RouteNames.logout,
-      'Logout',
+    RouteNames.description: BaseRoute(
+      RouteNames.description,
+      'Description',
       null,
-      view: ({params, settings}) => LogOut(),
+      view: ({params, settings}) => Descriptionpage(params: params),
     ),
 
-    // RouteNames.adduniversity: BaseRoute(
-    //   RouteNames.adduniversity,
-    //   'AddUniversity',
-    //   null,
-    //   view: ({params, settings}) => AddSchool(),
-    // ),
+    RouteNames.filter: BaseRoute(
+      RouteNames.filter,
+      'Filter',
+      null,
+      view: ({params, settings}) => FilterPage(),
+    ),
 
-    // RouteNames.save: BaseRoute(
-    //   RouteNames.save,
-    //   'Save',
-    //   null,
-    //   view: ({params, settings}) => SavePage(),
-    // ),
-
-    // RouteNames.nosavings: BaseRoute(
-    //   RouteNames.nosavings,
-    //   'Nosavings',
-    //   null,
-    //   view: ({params, settings}) => NoSaving(),
-    // ),
-
-    // RouteNames.manage: BaseRoute(
-    //   RouteNames.manage,
-    //   'Manage',
-    //   null,
-    //   view: ({params, settings}) => ManagePage(),
-    // ),
-
-    // RouteNames.chatbot: BaseRoute(
-    //   RouteNames.chatbot,
-    //   'Chatbot',
-    //   null,
-    //   view: ({params, settings}) => ChatbotPage(),
-    // )
   };
 }
 

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:veli__flutter/routes/route_config.dart';
+
+import 'package:veli_flutter/routes/route_config.dart';
+
 
 class Router {
   static Route generateRoute(RouteSettings settings) {

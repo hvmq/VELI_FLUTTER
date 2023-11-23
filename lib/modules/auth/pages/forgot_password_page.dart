@@ -6,6 +6,7 @@ import 'package:http/http.dart' as http;
 import 'package:veli_flutter/constants/common.constanst.dart';
 import 'package:veli_flutter/helpers/navigator_helper.dart';
 import 'package:veli_flutter/routes/route_config.dart';
+import 'package:veli_flutter/constants/common.constanst.dart';
 
 import '../widgets/auth_action_button.dart';
 import '../widgets/auth_form_text_field.dart';
@@ -31,8 +32,7 @@ class _ForgotpassPageState extends State<ForgotpassPage> {
             params: {'phone': controller.text}, isReplaceName: true);
       }
     } catch (e) {
-      print(
-          'File: lib/modules/chat/pages/forgot_password.dart - Line: 24: $e');
+      print('File: lib/modules/chat/pages/forgot_password.dart - Line: 24: $e');
     }
   }
 

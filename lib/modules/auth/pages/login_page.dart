@@ -1,198 +1,232 @@
+import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:veli_flutter/constants/common.constanst.dart';
+import 'package:veli_flutter/helpers/navigator_helper.dart';
+import 'package:veli_flutter/models/user_model.dart';
+import 'package:veli_flutter/modules/auth/pages/forgot_password_page.dart';
+import 'package:veli_flutter/pages/home_page.dart';
+import 'package:veli_flutter/routes/route_config.dart';
+import 'package:veli_flutter/services/local_storage_service.dart';
+import 'package:veli_flutter/utils/app_color.dart';
+import 'package:veli_flutter/widgets/navbar.dart';
 
-class SignupPage extends StatelessWidget {
-  const SignupPage({Key? key}) : super(key: key);
+import '../widgets/auth_action_button.dart';
+import '../widgets/auth_form_text_field.dart';
+import '../widgets/auth_page_link.dart';
+import 'sign_up_page.dart';
+
+class LoginPage extends StatefulWidget {
+  LoginPage({Key? key}) : super(key: key);
+
+  @override
+  State<LoginPage> createState() => _LoginPageState();
+}
+
+class _LoginPageState extends State<LoginPage> {
+  TextEditingController phoneNumberController = TextEditingController(text: '');
+  TextEditingController passwordController = TextEditingController(text: '');
+  LocalStorageService localStorage = LocalStorageService();
+  bool _isPasswordHidden = true;
+
+  @override
+  void initState() {
+    super.initState();
+    // checkLoginStatus();
+  }
+
+  // void checkLoginStatus() async {
+  //   SharedPreferences prefs = await SharedPreferences.getInstance();
+  //   bool isLoggedIn = prefs.getBool('isLoggedIn') ?? false;
+
+  //   if (isLoggedIn) {
+  //     Navigator.of(context).pushReplacement(
+  //       MaterialPageRoute(builder: (context) => MainPage()),
+  //     );
+  //   }
+  // }
+
+  void _togglePasswordVisibility() {
+    setState(() {
+      _isPasswordHidden = !_isPasswordHidden;
+    });
+  }
+
+  Future<bool> login(String phoneNumber, String password) async {
+    try {
+      final response =
+          await http.post(Uri.parse('$apiHost/api/auth/login'), body: {
+        'phone': phoneNumber,
+        'password': password,
+      });
+
+      if (response.statusCode == 200) {
+        final userJson = jsonDecode(response.body)["data"];
+        final user = UserModel.fromJson(userJson);
+        await localStorage.setUserInfo(user);
+
+        Fluttertoast.showToast(
+          msg: "Đăng nhập thành công",
+        );
+
+        SharedPreferences prefs = await SharedPreferences.getInstance();
+        prefs.setBool('isLoggedIn', true);
+
+        return true;
+      } else {
+        Fluttertoast.showToast(
+          msg: jsonDecode(response.body)["message"],
+        );
+        return false;
+      }
+    } catch (e) {
+      print(e);
+      return false;
+    }
+  }
+
+  void onPressedLogin() async {
+    print(phoneNumberController.text);
+    print(passwordController.text);
+
+    bool loginResult =
+        await login(phoneNumberController.text, passwordController.text);
+    if (loginResult) {
+      navigatorHelper.changeView(context, RouteNames.main, isReplaceName: true);
+    } else {
+      Fluttertoast.showToast(
+          msg: "Vui lòng kiểm tra số điện thoại và password");
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Padding(
-        padding: const EdgeInsets.all(0),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            const Text(
-              'Tạo tài khoản',
-              style: TextStyle(
-                fontSize: 30,
-                fontWeight: FontWeight.bold,
-              ),
-              textAlign: TextAlign.center,
-            ),
-            const SizedBox(height: 10),
-            const Padding(
-              padding: EdgeInsets.symmetric(horizontal: 50.0),
-              child: Text(
-                'Tạo nhanh tài khoản Veli để sử dụng',
-                style: TextStyle(
-                  fontSize: 12,
-                ),
-                textAlign: TextAlign.center,
-              ),
-            ),
-            const SizedBox(height: 50),
-            const Padding(
-              padding: EdgeInsets.fromLTRB(0, 0, 230, 10),
-              child: Text(
-                'Họ và tên',
-                style: TextStyle(
-                  fontSize: 16,
-                ),
-                textAlign: TextAlign.left,
-              ),
-            ),
-            Container(
-              width: 300,
-              height: 50,
-              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 0),
-              decoration: BoxDecoration(
-                color: Colors.transparent,
-                border: Border.all(color: Colors.black, width: 0.1),
-                borderRadius: BorderRadius.circular(10),
-              ),
-              child: const TextField(
-                decoration: InputDecoration(
-                  hintText: 'Nguyễn Văn A',
-                  hintStyle: TextStyle(color: Colors.grey),
-                  border: InputBorder.none,
-                ),
-              ),
-            ),
-            const SizedBox(height: 10),
-            const Padding(
-              padding: EdgeInsets.fromLTRB(0, 0, 205, 10),
-              child: Text(
-                'Số điện thoại',
-                style: TextStyle(
-                  fontSize: 16,
-                ),
-                textAlign: TextAlign.left,
-              ),
-            ),
-            Container(
-              width: 300,
-              height: 50,
-              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 0),
-              decoration: BoxDecoration(
-                color: Colors.transparent,
-                border: Border.all(color: Colors.black, width: 0.1),
-                borderRadius: BorderRadius.circular(10),
-              ),
-              child: const TextField(
-                decoration: InputDecoration(
-                  hintText: 'Nhập số điện thoại',
-                  hintStyle: TextStyle(color: Colors.grey),
-                  border: InputBorder.none,
-                ),
-              ),
-            ),
-            const SizedBox(height: 10),
-            const Padding(
-              padding: EdgeInsets.fromLTRB(0, 0, 230, 10),
-              child: Text(
-                'Mật khẩu',
-                style: TextStyle(
-                  fontSize: 16,
-                ),
-                textAlign: TextAlign.left,
-              ),
-            ),
-            Container(
-              width: 300,
-              height: 50,
-              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-              decoration: BoxDecoration(
-                color: Colors.transparent,
-                border: Border.all(color: Colors.black, width: 0.1),
-                borderRadius: BorderRadius.circular(10),
-              ),
-              child: TextFormField(
-                obscureText: true,
-                decoration: InputDecoration(
-                  hintText: 'Nhập mật khẩu',
-                  hintStyle: const TextStyle(color: Colors.grey),
-                  suffixIcon: GestureDetector(
-                    onTap: () {
-                      // BE MK
-                    },
-                    child: const Icon(Icons.visibility_off),
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.all(0),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Container(
+                //padding: EdgeInsets.only(top: 90.0),
+                margin: EdgeInsets.only(top: 90.0),
+                child: const Text(
+                  'Chào mừng đã trở lại!',
+                  style: TextStyle(
+                    fontSize: 30,
+                    fontWeight: FontWeight.bold,
+                    color: AppColor.darkblueColor,
                   ),
-                  border: InputBorder.none,
+                  textAlign: TextAlign.center,
                 ),
               ),
-            ),
-            const SizedBox(height: 20),
-            Container(
-              width: 500,
-              height: 100,
-              padding: const EdgeInsets.fromLTRB(40, 20, 40, 20),
-              child: ElevatedButton(
-                onPressed: () {
-                  // Xử lý BE
-                },
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: const Color(0xFF0EBF7E),
-                ),
-                child: const Text('Đăng ký'),
-              ),
-            ),
-            Container(
-              width: 500,
-              height: 60,
-              padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 0),
-              child: ElevatedButton(
-                onPressed: () {
-                  // Xử lý BE
-                },
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: const Color(0xFFEFEFEF),
-                ),
-                child: Padding(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 10, vertical: 20),
-                  child: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Image.asset(
-                        'assets/images/logo_google.png',
-                        height: 20,
-                        width: 20,
-                      ),
-                      const SizedBox(
-                        width: 20,
-                        height: 0,
-                      ),
-                      const Text(
-                        'Đăng ký bằng Google',
-                        style: TextStyle(color: Colors.black),
-                      ),
-                    ],
+              const SizedBox(height: 10),
+              const Padding(
+                padding: EdgeInsets.symmetric(horizontal: 50.0),
+                child: Text(
+                  'Veli - nơi trao đổi và mua bán tài liệu, giáo trình Công nghệ thông tin',
+                  style: TextStyle(
+                    fontSize: 12,
+                    color: AppColor.darkblueColor,
                   ),
+                  textAlign: TextAlign.center,
                 ),
               ),
-            ),
-            const SizedBox(
-              height: 10,
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                const Text('Bạn đã có tài khoản?'),
-                TextButton(
-                  onPressed: () {
-                    // BE
-                  },
-                  child: const Text(
-                    'Đăng nhập ngay',
-                    style: TextStyle(
-                      decoration: TextDecoration.underline,
-                      color: Colors.orange,
+              const SizedBox(height: 50),
+              AuthFormTextField(
+                label: 'Số điện thoại',
+                hint: 'Nhập số điện thoại',
+                controller: phoneNumberController,
+              ),
+              const SizedBox(height: 10),
+              AuthFormTextField(
+                label: 'Mật khẩu',
+                hint: 'Nhập mật khẩu',
+                obscureText: _isPasswordHidden,
+                controller: passwordController,
+              ),
+              // IconButton(
+              //     onPressed: _togglePasswordVisibility,
+              //     icon: Icon(
+              //       _isObscure ? Icons.visibility : Icons.visibility_off,
+              //       color: Colors.grey,
+              //     )),
+              SizedBox(height: 20),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  // Container(
+                  // padding: const EdgeInsets.only(left: 35),
+                  // child: Row(
+                  // children: [
+                  // Checkbox(
+                  // value: false,
+                  // onChanged: (value) {},
+                  // ),
+                  // const Text(
+                  // 'Nhớ đăng nhập',
+                  // textAlign: TextAlign.center,
+                  // ),
+                  // ],
+                  // ),
+                  // ),
+                  Container(
+                    padding: const EdgeInsets.only(right: 35),
+                    child: TextButton(
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => ForgotpassPage()),
+                        );
+                      },
+                      child: const Text(
+                        'Quên mật khẩu',
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          color: AppColor.darkblueColor,
+                        ),
+                      ),
                     ),
                   ),
+                ],
+              ),
+              AuthActionButton(
+                text: 'Đăng nhập',
+                onPressed: onPressedLogin,
+              ),
+
+              AuthActionButton(
+                text: 'Đăng nhập bằng Google',
+                onPressed: () {
+                  // Xử lý BE
+                },
+                backgroundColor: const Color(0xFFEFEFEF),
+                icon: Image.asset(
+                  'assets/images/logo_google.png',
+                  height: 20,
+                  width: 20,
                 ),
-              ],
-            ),
-          ],
+                textColor: Colors.black,
+              ),
+
+              const SizedBox(
+                height: 10,
+              ),
+              AuthPageLink(
+                text: 'chưa có tài khoản',
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => SignupPage()),
+                  );
+                },
+              ),
+            ],
+          ),
         ),
       ),
     );
