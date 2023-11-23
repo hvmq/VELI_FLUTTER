@@ -10,6 +10,7 @@ dependencies:
   flutter:
     sdk: flutter
 
+
   cupertino_icons: ^1.0.0
   bubble:
   intl:
@@ -32,6 +33,7 @@ dependencies:
   camera: ^0.10.5+5
   tflite_flutter: ^0.10.3
   flutter_svg: ^2.0.9
+
 dev_dependencies:
   flutter_test:
     sdk: flutter

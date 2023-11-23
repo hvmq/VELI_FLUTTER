@@ -15,6 +15,7 @@ import 'package:veli_flutter/pages/home_page.dart';
 import 'package:veli_flutter/pages/onboadring.dart';
 import 'package:veli_flutter/widgets/navbar.dart';
 
+
 /// Hoàn thiện phần router
 /// Viết file navigator_helper ( Dùng để chuyển trang ).
 /// cần cài thêm thư  viện page_transition
@@ -89,6 +90,7 @@ class RouteCreator {
       view: ({settings, params}) => SignupPage(),
     ),
 
+
     RouteNames.forgotpassword: BaseRoute(
       RouteNames.forgotpassword,
       'ForgotPassword',
@@ -104,6 +106,7 @@ class RouteCreator {
         params: params,
       ),
     ),
+
 
     RouteNames.updatePasswordOtp: BaseRoute(
       RouteNames.updatePasswordOtp,
@@ -122,6 +125,7 @@ class RouteCreator {
         params: params,
       ),
     ),
+
     RouteNames.successfullypage: BaseRoute(
       RouteNames.successfullypage,
       'SuccessfullyPage',
@@ -154,6 +158,7 @@ class RouteCreator {
       null,
       view: ({params, settings}) => FilterPage(),
     ),
+
   };
 }
 
