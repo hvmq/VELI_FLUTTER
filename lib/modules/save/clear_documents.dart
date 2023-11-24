@@ -1,16 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-import 'package:veli_flutter/helpers/navigator_helper.dart';
-import 'package:veli_flutter/routes/route_config.dart';
 
-class LogOut extends StatefulWidget {
-  const LogOut({Key? key}) : super(key: key);
+class ClearDocuments extends StatefulWidget {
+  const ClearDocuments({Key? key}) : super(key: key);
 
   @override
-  State<LogOut> createState() => _LogOutState();
+  State<ClearDocuments> createState() => _LogOutState();
 }
 
-class _LogOutState extends State<LogOut> {
+class _LogOutState extends State<ClearDocuments> {
   @override
   Widget build(BuildContext context) {
     final mediaQuery = MediaQuery.of(context);
@@ -37,7 +34,7 @@ class _LogOutState extends State<LogOut> {
                 height: 20,
               ),
               const Text(
-                'Đăng xuất',
+                'Xóa tài liệu',
                 style: TextStyle(
                     color: Color(0xFF150B3D),
                     fontSize: 16,
@@ -46,16 +43,15 @@ class _LogOutState extends State<LogOut> {
               ),
               const SizedBox(height: 11),
               RichText(
-                text: const TextSpan(
-                  text: 'Bạn có chắn chắc muốn đăng xuất ứng dụng?',
-                  style: TextStyle(
-                      color: Color(0xFF524B6B),
-                      fontSize: 12,
-                      wordSpacing: 2,
-                      fontWeight: FontWeight.w400),
-                ),
-                textAlign: TextAlign.center,
-              ),
+                  text: const TextSpan(
+                    text: 'Bạn có chắc xóa tài liệu này không?',
+                    style: TextStyle(
+                        color: Color(0xFF524B6B),
+                        fontSize: 12,
+                        wordSpacing: 2,
+                        fontWeight: FontWeight.w400),
+                  ),
+                  textAlign: TextAlign.center),
               const SizedBox(height: 29),
               ElevatedButton(
                 style: ElevatedButton.styleFrom(
@@ -77,11 +73,7 @@ class _LogOutState extends State<LogOut> {
                         fontWeight: FontWeight.w700),
                   ),
                 ),
-                onPressed: () async {
-                  final preferences = await SharedPreferences.getInstance();
-                  await preferences.clear();
-                  navigatorHelper.changeView(context, RouteNames.login);
-                },
+                onPressed: () {},
               ),
               const SizedBox(height: 10),
               ElevatedButton(
@@ -105,9 +97,7 @@ class _LogOutState extends State<LogOut> {
                         fontWeight: FontWeight.w700),
                   ),
                 ),
-                onPressed: () {
-                  //
-                },
+                onPressed: () {},
               ),
             ],
           ),
