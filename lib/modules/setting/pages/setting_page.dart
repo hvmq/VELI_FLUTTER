@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:veli__flutter/widgets/cutsom_switch.dart';
+import 'package:veli_flutter/widgets/cutsom_switch.dart';
 
 
 import './update_password.dart';

@@ -209,7 +209,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "0.9.3+1"
-
   flutter:
     dependency: "direct main"
     description: flutter
@@ -441,7 +440,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "0.7.4"
-
   lints:
     dependency: transitive
     description:
@@ -514,7 +512,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.0.0"
-
   page_transition:
     dependency: "direct main"
     description:
@@ -587,7 +584,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.1.7"
-
   pointycastle:
     dependency: transitive
     description:
@@ -897,7 +893,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "0.1.4-beta"
-
   webview_flutter:
     dependency: "direct main"
     description:
@@ -930,7 +925,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "3.9.4"
-
   win32:
     dependency: transitive
     description:
@@ -966,4 +960,3 @@ packages:
 sdks:
   dart: ">=3.1.0 <4.0.0"
   flutter: ">=3.13.0"
-
